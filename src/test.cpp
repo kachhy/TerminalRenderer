@@ -8,7 +8,7 @@ void perfTest(EngineInstance* inst) {
     inst->setBackground(Color::Black);
     
     for (size_t i = 0; i < 10000; ++i) {
-        inst->drawLine(20, 20, (i % 3) * (rand() % 10),(i % 3) * (rand() % 10), Color::Red);
+        drawLine(20, 20, (i % 3) * (rand() % 10),(i % 3) * (rand() % 10), Color::Red);
         inst->tick();
         inst->clear();
         if (i % 100 == 0)
@@ -100,7 +100,7 @@ int main() {
         double fps = (total > 0.0) ? (samples / total) : 0.0;
         // Print FPS in top left using cout
         int ifps = static_cast<int>(fps + 0.5);
-        std::cout << "\033[1;12H" << "FPS: " << ifps << "    \033[2J\033[H";
+        //std::cout << "\033[1;12H" << "FPS: " << ifps << "    \033[2J\033[H";
         // Rotated and projected points
         float proj[8][2];
         for (int i = 0; i < 8; ++i) {
@@ -121,7 +121,7 @@ int main() {
         // Draw edges
         for (int e = 0; e < 12; ++e) {
             int a = edges[e][0], b = edges[e][1];
-            inst->drawLine((size_t)proj[a][0], (size_t)proj[a][1], (size_t)proj[b][0], (size_t)proj[b][1], Color::BrightCyan);
+            drawLine((size_t)proj[a][0], (size_t)proj[a][1], (size_t)proj[b][0], (size_t)proj[b][1], Color::BrightCyan);
         }
         inst->tick();
         std::this_thread::sleep_for(std::chrono::milliseconds(30));

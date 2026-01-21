@@ -1,7 +1,6 @@
 #ifndef ENGINE_H
 #define ENGINE_H
 
-
 #include <unordered_map>
 #include <iostream>
 #include <cstddef>
@@ -149,10 +148,7 @@ public:
 
     void resetBackground() { backgroundTask.rule = RenderRule::RENDER_EMPTY; }
 
-    // Drawing tools
-    void drawLine(const size_t x_0, const size_t y_0, const size_t x_1, const size_t y_1, const Color color, const RenderRule rule = RenderRule::RENDER_DEFAULT);
-    void drawSquare(const size_t x, const size_t y, const size_t w, const size_t h, const Color color, const RenderRule rule = RenderRule::RENDER_DEFAULT);
-    void drawCircle(const size_t x, const size_t y, const int r, const Color color, const RenderRule rule = RenderRule::RENDER_DEFAULT);
+    // Text
     void drawText(const size_t x, const size_t y, const std::string& text, const Color foreground_color, const Color background_color = Color::Default);
 };
 

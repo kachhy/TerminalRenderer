@@ -16,7 +16,11 @@ void EngineInstance::tick() {
     ss << "\033[2J\033[H"; // Move the cursor to the beginning
     size_t i = 0;
     for (const Task& task : screen) {
-        ss << "\033[" << task.y << ";" << task.x * 2 << "H" << "\033[" << task.color << "  \033[0m"; // Write the pixel
+        if (task.rule == RenderRule::RENDER_TEXT)
+            ss << "\033[" << task.y << ";" << task.x * 2 << "H" << "\033[" << task.color << "\033[" << task.foreground_color << task.text << "\033[0m";
+        else
+            ss << "\033[" << task.y << ";" << task.x * 2 << "H" << "\033[" << task.color << "  \033[0m"; // Write the pixel
+
         if (!(++i % term_width))
             ss << "\n";
     }
@@ -77,36 +81,6 @@ void EngineInstance::fill(const Color color) {
 void EngineInstance::clear() {
     fill(Color::Default);
     tick();
-}
-
-void EngineInstance::drawLine(const size_t x_0, const size_t y_0, const size_t x_1, const size_t y_1, const Color color, const RenderRule rule) {
-    const double distance = std::sqrt(std::pow(static_cast<int64_t>(x_0) - static_cast<int64_t>(x_1), 2) + std::pow(static_cast<int64_t>(y_0) - static_cast<int64_t>(y_1), 2));
-    const double dx = (static_cast<double>(x_1) - static_cast<double>(x_0)) / distance;
-    const double dy = (static_cast<double>(y_1) - static_cast<double>(y_0)) / distance;
-
-    double cx = x_0;
-    double cy = y_0;
-
-    for (size_t i = 0; i < static_cast<size_t>(distance); ++i) {
-        addToQueue(std::round(cx), std::round(cy), color, rule);
-        cx += dx;
-        cy += dy;
-    }
-}
-
-void EngineInstance::drawSquare(size_t x, size_t y, const size_t w, const size_t h, const Color color, const RenderRule rule) {
-    for (int i = y; i < h; ++i) {
-        for (int j = x; j < w; ++j) {
-            addToQueue(j, i, color, rule);
-        }
-    }
-}
-
-void EngineInstance::drawCircle(const size_t x_0, const size_t y_0, const int r, const Color color, const RenderRule rule) {
-    for(int64_t y = -r; y <= r; ++y)
-        for(int64_t x = -r; x <= r; ++x)
-            if(x * x + y * y <= r * r)
-                addToQueue(static_cast<int64_t>(x_0) + x, static_cast<int64_t>(y_0) + y, color, rule);
 }
 
 void EngineInstance::drawText(const size_t x, const size_t y, const std::string& text, const Color foreground_color, const Color background_color) {
