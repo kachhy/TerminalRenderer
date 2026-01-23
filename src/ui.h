@@ -1,34 +1,48 @@
 #ifndef UI_H
 #define UI_H
 
-#include "engine.h"
+#include "draw.h"
 
 class UIElement {
+private:
+	bool is_active;
 public:
-    UIElement();
-    virtual bool active() {}
-    virtual void render(const size_t x, const size_t y) {}
+	UIElement() : is_active(false) { }
+	bool active() const { return is_active; };
+	void setActive(const bool val) { is_active = val; }
 };
 
 class Button : public UIElement {
 public:
-    Button() { UIElement(); }
-    void render(const size_t x, const size_t y); // override
+	Button() = default;
+	void render(
+		const size_t x,
+		const size_t y,
+		const size_t w,
+		const size_t h,
+		const Color base_color,
+		const Color face_color,
+		const Color text_color,
+		const std::string& text = ""
+	);
 };
 
 class UIInstance {
 private:
-    UIInstance();
-    static UIInstance* single;
+	UIInstance() : current_index(0) { };
+	static UIInstance* single;
+	size_t current_index;
 public:
-    static UIInstance* GetInstance() {
-        if (!single)
-            single = new UIInstance();
-        
-        return single;
-    }
+	std::vector<UIElement> elements; // TODO: temp
 
-    void inputTick() const;
+	[[nodiscard]] static UIInstance* getInstance() {
+		if (!single)
+			single = new UIInstance();
+
+		return single;
+	}
+
+	bool inputTick();
 };
 
 #endif // UI_H
