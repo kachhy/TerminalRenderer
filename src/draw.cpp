@@ -17,8 +17,8 @@ void drawLine(const size_t x_0, const size_t y_0, const size_t x_1, const size_t
 }
 
 void drawSquare(size_t x, size_t y, const size_t w, const size_t h, const Color color, const RenderRule rule) {
-	for (int i = y; i < y + h; ++i)
-		for (int j = x; j < x + w; ++j)
+	for (int64_t i = y; i < y + h; ++i)
+		for (int64_t j = x; j < x + w; ++j)
 			EngineInstance::getInstance()->addToQueue(j, i, color, rule);
 }
 
