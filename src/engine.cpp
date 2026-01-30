@@ -9,26 +9,31 @@ void setCharAt(const Task& task) { std::cout << "\033[" << task.y << ";" << task
 
 void EngineInstance::tick() {
 	std::stringstream ss;
-	ss << "\033[2J\033[H"; // Move the cursor to the beginning
+	ss << "\033[H"; // Reset
 	size_t i = 0;
 	std::unordered_set<Coord> text_skip_indices;
+	Color prev_color = Color::Default;
 	for (const Task& task : screen) {
 		if (task.rule == RenderRule::RENDER_TEXT) {
-			ss << "\033[" << task.y << ";" << task.x * 2 << "H" << "\033[" << task.color << "\033[" << task.foreground_color << task.text << "\033[0m";
-			for (size_t i = 0; i < task.text.size() / 2; i++)
+			ss << "\033[" << task.y << ";" << task.x << "H" << "\033[" << task.color << "\033[" << task.foreground_color << task.text << "\033[0m";
+			for (size_t i = 0; i < task.text.size(); i++)
 				text_skip_indices.emplace(task.x + i, task.y);
 		} else {
 			if (text_skip_indices.find(Coord(task.x, task.y)) != text_skip_indices.end()) {
 				if (!(++i % term_width))
 					ss << "\n";
-
 				continue;
 			}
-			ss << "\033[" << task.y << ";" << task.x * 2 << "H" << "\033[" << task.color << "  \033[0m"; // Write the pixel
+			if (prev_color == task.color)
+				ss << "\033[" << task.y << ";" << task.x << "H" << "  ";
+			else
+				ss << "\033[" << task.y << ";" << task.x << "H" << "\033[" << task.color << "  "; // Write the pixel
 		}
 
 		if (!(++i % term_width))
 			ss << "\n";
+
+		prev_color = task.color;
 	}
 	std::cout << ss.str() << std::flush;
 }
