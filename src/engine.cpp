@@ -25,9 +25,9 @@ void EngineInstance::tick() {
 				continue;
 			}
 			if (prev_color == task.color)
-				ss << "\033[" << task.y << ";" << task.x << "H" << "  ";
+				ss << "\033[" << task.y << ";" << task.x * 2 << "H" << "  ";
 			else
-				ss << "\033[" << task.y << ";" << task.x << "H" << "\033[" << task.color << "  "; // Write the pixel
+				ss << "\033[" << task.y << ";" << task.x * 2 << "H" << "\033[" << task.color << "  "; // Write the pixel
 		}
 
 		if (!(++i % term_width))
