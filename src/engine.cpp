@@ -10,14 +10,14 @@ void setCharAt(const Task& task) { std::cout << "\033[" << task.y << ";" << task
 void EngineInstance::tick() {
 	std::stringstream ss;
 	ss << "\033[H"; // Reset
-	size_t i = 0;
 	std::unordered_set<Coord> text_skip_indices;
 	Color prev_color = Color::Default;
+	size_t i = 0;
 	for (const Task& task : screen) {
 		if (task.rule == RenderRule::RENDER_TEXT) {
 			ss << "\033[" << task.y << ";" << task.x << "H" << "\033[" << task.color << "\033[" << task.foreground_color << task.text << "\033[0m";
-			for (size_t i = 0; i < task.text.size(); i++)
-				text_skip_indices.emplace(task.x + i, task.y);
+			for (size_t j = 0; j < task.text.size(); j++)
+				text_skip_indices.emplace(task.x + j, task.y);
 		} else {
 			if (text_skip_indices.find(Coord(task.x, task.y)) != text_skip_indices.end()) {
 				if (!(++i % term_width))
