@@ -125,21 +125,41 @@ void cubeTest(EngineInstance* inst) {
 	std::cout << "\033[?25h" << std::flush;
 }
 
+void print_stuff() {
+	std::cout << "test";
+}
+
+void print_stuff2() {
+	std::cout << "test2" << std::endl;
+}
+
 void uiTesting(EngineInstance* inst) {
-	Button button;
-	Button button2;
-	UIInstance::getInstance()->elements.emplace_back(button);
-	UIInstance::getInstance()->elements.emplace_back(button2);
-	button.render(15, 5, 20, 5, Color::Blue, Color::White, Color::Black, "Test");
-	button2.render(15, 25, 20, 5, Color::Blue, Color::White, Color::Black, "Test2");
-	inst->tick();
+	UIInstance* ui_inst = UIInstance::getInstance();
+	
+	// Button button(15, 5, 20, 5, "test", nullptr, Color::Blue, Color::Blue, Color::White, Color::White);
+	// Button button1(15, 15, 20, 5, "Click to print", print_stuff, Color::Blue, Color::Blue, Color::White, Color::White);
+	// Button button2(15, 25, 20, 5, "Click to print other stuff", print_stuff2, Color::Blue, Color::Blue, Color::White, Color::White);
+	// Slider slider(40, 5, 20, 3, 1, 10, 5, 1, Color::White, Color::Black, Color::White, Color::Blue);
+	// CheckBox cb(40, 15, 3, "Testbox", Color::White, Color::Red, Color::Green, Color::White, false);
+	// ScrollableCanvas canvas(40, 20, 8, 8, 30, 30, Color::White, Color::Blue);
+	// ui_inst->elements.emplace_back(&button);
+	// ui_inst->elements.emplace_back(&button1);
+	// ui_inst->elements.emplace_back(&button2);
+	// ui_inst->elements.emplace_back(&slider);
+	// ui_inst->elements.emplace_back(&cb);
+	// ui_inst->elements.emplace_back(&canvas);
+
+	ScrollableCanvas canvas(1, 1, 20, 20, 30, 30, Color::White, Color::Blue);
+	ui_inst->elements.emplace_back(&canvas);
+
+	canvas.addToQueue(Task(4, 4, Color::Red, RenderRule::RENDER_DEFAULT));
+	canvas.addToQueue(Task(4, 8, Color::Green, RenderRule::RENDER_DEFAULT));
+	canvas.addToQueue(Task(21, 8, Color::Green, RenderRule::RENDER_DEFAULT));
+	canvas.addToQueue(Task(26, 8, Color::Yellow, RenderRule::RENDER_DEFAULT));
 
 	while (1) {
-		if (UIInstance::getInstance()->inputTick()) {
-			button.render(15, 5, 20, 5, Color::Blue, Color::White, Color::Black, "Test");
-			button2.render(15, 25, 20, 5, Color::Blue, Color::White, Color::Black, "Test2");
-			inst->tick();
-		}
+		ui_inst->UITick();
+		inst->tick();
 	}
 }
 
@@ -153,6 +173,8 @@ int main() {
 	EngineInstance* inst = EngineInstance::getInstance();
 
 	uiTesting(inst);
+
+	//cubeTest(inst);
 
 	return 0;
 }
