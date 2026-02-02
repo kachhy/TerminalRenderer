@@ -22,6 +22,13 @@ void drawSquare(size_t x, size_t y, const size_t w, const size_t h, const Color 
 			EngineInstance::getInstance()->addToQueue(j, i, color, rule);
 }
 
+void drawBox(size_t x, size_t y, const size_t w, const size_t h, const Color color, const RenderRule rule) {
+	drawLine(x, y, x + w, y, color, rule);
+	drawLine(x, y, x, y + h, color, rule);
+	drawLine(x + w, y, x + w, y + h + 1, color, rule);
+	drawLine(x, y + h, x + w + 1, y + h, color, rule);
+}
+
 void drawCircle(const size_t x_0, const size_t y_0, const int r, const Color color, const RenderRule rule) {
 	for (int64_t y = -r; y <= r; ++y)
 		for (int64_t x = -r; x <= r; ++x)
