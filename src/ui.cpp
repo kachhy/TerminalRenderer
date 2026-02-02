@@ -5,24 +5,26 @@
 #else
 #include <termios.h>
 
-char _getch() {
-	char buf = 0;
-	struct termios old = { 0 };
-	if (tcgetattr(0, &old) < 0)
-		perror("tcsetattr()");
-	old.c_lflag &= ~ICANON; // Disable canonical mode (buffering)
-	old.c_lflag &= ~ECHO;	// Disable echoing key to screen
-	old.c_cc[VMIN] = 1;
-	old.c_cc[VTIME] = 0;
-	if (tcsetattr(0, TCSANOW, &old) < 0)
-		perror("tcsetattr ICANON");
-	if (read(0, &buf, 1) < 0)
-		perror("read()");
-	old.c_lflag |= ICANON;
-	old.c_lflag |= ECHO;
-	if (tcsetattr(0, TCSADRAIN, &old) < 0)
-		perror("tcsetattr ~ICANON");
-	return buf;
+#include <termios.h>
+#include <unistd.h>
+#include <cstdio>
+
+int _getch() {
+    int ch;
+    struct termios oldt, newt;
+    
+    if (tcgetattr(STDIN_FILENO, &oldt) != 0)
+		return -1;
+    
+    newt = oldt;
+    newt.c_lflag &= ~(ICANON | ECHO);
+    newt.c_cc[VMIN] = 1;
+    newt.c_cc[VTIME] = 0;
+    tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+    ch = getchar();
+    tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+	
+    return ch;
 }
 #endif
 
@@ -94,6 +96,33 @@ void CheckBox::render() const {
 
 void CheckBox::onSelect() {
 	is_selected = !is_selected;
+	render();
+	EngineInstance::getInstance()->tick();
+}
+
+void TextBox::render() const {
+	if (w < 2 || h < 2)
+		return;
+
+	drawSquare(x, y, w, h, active() ? selected_outline_color : outline_color);
+	drawSquare(x + 1, y + 1, w - 2, h - 2, background_color);
+
+	if (!text.empty()) {
+		std::string rendered_text(text);
+		if (text.size() > 2 * (w - 2)) // Check text bbox
+			rendered_text = rendered_text.substr(text.size() - 2 * w + 4);
+
+		EngineInstance::getInstance()->drawText(2 * (x + 1), y + h / 2, rendered_text, Color::Default, Color::Default);
+	}
+}
+
+void TextBox::onChar(const char c) {
+	// Backspace
+	if ((c == '\b' || c == 8 || c == 127) && !text.empty())
+		text.pop_back();
+	else
+		text += c;
+
 	render();
 	EngineInstance::getInstance()->tick();
 }
@@ -195,6 +224,8 @@ bool UIInstance::inputTick() {
 			elements[current_index]->onRightArrow();
 	}
 #endif
+	else
+		elements[current_index]->onChar(c);
 
 	return false;
 }

@@ -19,6 +19,7 @@ public:
 	virtual void onRightArrow() { };
 	virtual void onUpArrow() { };
 	virtual void onDownArrow() { };
+	virtual void onChar(const char c) { };
 };
 
 class Button : public UIElement {
@@ -64,6 +65,21 @@ public:
 	void render() const override;
 	void onSelect() override;
 	bool getSelected() const { return is_selected; }
+};
+
+// TODO: implement scrolling for this
+class TextBox : public UIElement {
+protected:
+	std::string text;
+	size_t x, y, w, h;
+	Color text_color, background_color, outline_color, selected_outline_color;
+	bool is_active;
+public:
+	TextBox(size_t x, size_t y, size_t w, size_t h, Color text_color, Color background_color, Color selected_outline_color, Color outline_color, const std::string& default_text = "") :
+		x(x), y(y), w(w), h(h), text(default_text), text_color(text_color), background_color(background_color), selected_outline_color(selected_outline_color), outline_color(outline_color) { }
+
+	void render() const override;
+	void onChar(const char c) override;
 };
 
 class ScrollableCanvas : public UIElement {

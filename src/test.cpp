@@ -135,7 +135,7 @@ void print_stuff2() {
 
 void uiTesting(EngineInstance* inst) {
 	UIInstance* ui_inst = UIInstance::getInstance();
-	
+	// 1
 	// Button button(15, 5, 20, 5, "test", nullptr, Color::Blue, Color::Blue, Color::White, Color::White);
 	// Button button1(15, 15, 20, 5, "Click to print", print_stuff, Color::Blue, Color::Blue, Color::White, Color::White);
 	// Button button2(15, 25, 20, 5, "Click to print other stuff", print_stuff2, Color::Blue, Color::Blue, Color::White, Color::White);
@@ -149,16 +149,26 @@ void uiTesting(EngineInstance* inst) {
 	// ui_inst->elements.emplace_back(&cb);
 	// ui_inst->elements.emplace_back(&canvas);
 
-	ScrollableCanvas canvas(1, 1, 20, 20, 30, 30, Color::White, Color::Blue);
-	ui_inst->elements.emplace_back(&canvas);
+	// 2
+	// ScrollableCanvas canvas(1, 1, 20, 20, 30, 30, Color::White, Color::Blue);
+	// ScrollableCanvas canvas2(24, 1, 20, 20, 30, 30, Color::White, Color::Blue);
+	// ui_inst->elements.emplace_back(&canvas);
+	// ui_inst->elements.emplace_back(&canvas2);
 
-	canvas.addToQueue(Task(4, 4, Color::Red, RenderRule::RENDER_DEFAULT));
-	canvas.addToQueue(Task(4, 8, Color::Green, RenderRule::RENDER_DEFAULT));
-	canvas.addToQueue(Task(21, 8, Color::Green, RenderRule::RENDER_DEFAULT));
-	canvas.addToQueue(Task(26, 8, Color::Yellow, RenderRule::RENDER_DEFAULT));
-	auto boundFunc = std::bind(&ScrollableCanvas::addToQueue, &canvas, std::placeholders::_1);
-	drawSquare(10, 10, 5, 5, Color::Red, RenderRule::RENDER_DEFAULT, boundFunc);
-
+	// canvas.addToQueue(Task(4, 4, Color::Red, RenderRule::RENDER_DEFAULT));
+	// canvas.addToQueue(Task(4, 8, Color::Green, RenderRule::RENDER_DEFAULT));
+	// canvas.addToQueue(Task(21, 8, Color::Green, RenderRule::RENDER_DEFAULT));
+	// canvas.addToQueue(Task(26, 8, Color::Yellow, RenderRule::RENDER_DEFAULT));
+	// auto boundAddToQueue1 = std::bind(&ScrollableCanvas::addToQueue, &canvas, std::placeholders::_1);
+	// drawSquare(10, 10, 5, 5, Color::Red, RenderRule::RENDER_DEFAULT, boundAddToQueue1);
+	// auto boundAddToQueue2 = std::bind(&ScrollableCanvas::addToQueue, &canvas2, std::placeholders::_1);
+	// drawSquare(10, 10, 5, 5, Color::Green, RenderRule::RENDER_DEFAULT, boundAddToQueue2);
+	// drawCircle(20, 20, 5, Color::Magenta, RenderRule::RENDER_DEFAULT, boundAddToQueue2);
+	
+	// 3
+	TextBox textbox(25, 1, 15, 5, Color::White, Color::Black, Color::Blue, Color::White);
+	ui_inst->elements.emplace_back(&textbox);
+	
 	while (1) {
 		ui_inst->UITick();
 		inst->tick();
