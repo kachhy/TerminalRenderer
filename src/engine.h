@@ -69,6 +69,7 @@ struct Task {
 	RenderRule rule;
 
 	Task() = default;
+	Task(const Task& other) : text(other.text), x(other.x), y(other.y), color(other.color), foreground_color(other.foreground_color), rule(other.rule) { }
 	Task(const size_t x, const size_t y, const Color color, const RenderRule rule = RenderRule::RENDER_DEFAULT) : x(x), y(y), color(color), rule(rule) { }
 	Task(const size_t x, const size_t y, const Color color, const Color foreground_color, const std::string& text, const RenderRule rule = RenderRule::RENDER_DEFAULT) :
 		x(x), y(y), color(color), foreground_color(foreground_color), text(text), rule(rule) { }
@@ -100,12 +101,9 @@ private:
 		term_height = w.ws_row;
 #endif
 		screen.reserve(term_width * term_height);
-		// toUpdate.reserve(term_width * term_height);
 		for (size_t i = 0; i < term_height; ++i) {
-			for (size_t j = 0; j < term_width; ++j) {
+			for (size_t j = 0; j < term_width; ++j)
 				screen.emplace_back(j, i, Color::Default, RenderRule::RENDER_EMPTY);
-				// toUpdate.emplace_back(true);
-			}
 		}
 	}
 
