@@ -83,6 +83,7 @@ public:
 
 	void render() const override;
 	void onChar(const char c) override;
+	std::string getText() const { return text; } 
 };
 
 class ScrollableCanvas : public UIElement {
