@@ -156,6 +156,8 @@ void uiTesting(EngineInstance* inst) {
 	canvas.addToQueue(Task(4, 8, Color::Green, RenderRule::RENDER_DEFAULT));
 	canvas.addToQueue(Task(21, 8, Color::Green, RenderRule::RENDER_DEFAULT));
 	canvas.addToQueue(Task(26, 8, Color::Yellow, RenderRule::RENDER_DEFAULT));
+	auto boundFunc = std::bind(&ScrollableCanvas::addToQueue, &canvas, std::placeholders::_1);
+	drawSquare(10, 10, 5, 5, Color::Red, RenderRule::RENDER_DEFAULT, boundFunc);
 
 	while (1) {
 		ui_inst->UITick();
