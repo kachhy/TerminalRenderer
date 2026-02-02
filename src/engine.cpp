@@ -97,7 +97,7 @@ void EngineInstance::clear() {
 	tick();
 }
 
-void EngineInstance::drawText(const size_t x, const size_t y, const std::string& text, const Color foreground_color, const Color background_color) {
+void EngineInstance::drawText(const size_t x, const size_t y, const std::string& text, const ForegroundColor foreground_color, const Color background_color) {
 	const Color bgc = background_color == Color::Default ? (backgroundTask.rule == RenderRule::RENDER_EMPTY ? Color::Default : backgroundTask.color) : background_color;
 
 	addToQueue(x, y, background_color, foreground_color, text, RenderRule::RENDER_TEXT);

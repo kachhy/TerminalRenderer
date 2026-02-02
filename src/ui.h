@@ -27,10 +27,11 @@ protected:
 	std::string text;
 	void (*func)();
 	size_t x, y, w, h;
-	Color text_color, default_color, selected_color, outline_color;
+	ForegroundColor text_color;
+	Color default_color, selected_color, outline_color;
 	bool is_active;
 public:
-	Button(size_t x, size_t y, size_t w, size_t h, const std::string& text, void (*func)(), Color text_color, Color default_color, Color selected_color, Color outline_color) :
+	Button(size_t x, size_t y, size_t w, size_t h, const std::string& text, void (*func)(), ForegroundColor text_color, Color default_color, Color selected_color, Color outline_color) :
 		x(x), y(y), w(w), h(h), text(text), func(func), text_color(text_color), default_color(default_color), selected_color(selected_color), outline_color(outline_color) { }
 
 	void render() const override;
@@ -57,9 +58,10 @@ protected:
 	size_t x, y, size;
 	std::string text;
 	bool is_active, is_selected;
-	Color outline_color, unselected_color, selected_color, text_color; 
+	ForegroundColor text_color;
+	Color outline_color, unselected_color, selected_color; 
 public:
-	CheckBox(size_t x, size_t y, size_t size, const std::string& text, Color outline_color, Color unselected_color, Color selected_color, Color text_color, bool starting_value = false) :
+	CheckBox(size_t x, size_t y, size_t size, const std::string& text, Color outline_color, Color unselected_color, Color selected_color, ForegroundColor text_color, bool starting_value = false) :
 		x(x), y(y), size(size), text(text), outline_color(outline_color), unselected_color(unselected_color), selected_color(selected_color), text_color(text_color), is_selected(starting_value) { }
 
 	void render() const override;
@@ -72,10 +74,11 @@ class TextBox : public UIElement {
 protected:
 	std::string text;
 	size_t x, y, w, h;
-	Color text_color, background_color, outline_color, selected_outline_color;
+	ForegroundColor text_color;
+	Color background_color, outline_color, selected_outline_color;
 	bool is_active;
 public:
-	TextBox(size_t x, size_t y, size_t w, size_t h, Color text_color, Color background_color, Color selected_outline_color, Color outline_color, const std::string& default_text = "") :
+	TextBox(size_t x, size_t y, size_t w, size_t h, ForegroundColor text_color, Color background_color, Color selected_outline_color, Color outline_color, const std::string& default_text = "") :
 		x(x), y(y), w(w), h(h), text(default_text), text_color(text_color), background_color(background_color), selected_outline_color(selected_outline_color), outline_color(outline_color) { }
 
 	void render() const override;

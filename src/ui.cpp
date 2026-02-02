@@ -23,7 +23,7 @@ int _getch() {
     tcsetattr(STDIN_FILENO, TCSANOW, &newt);
     ch = getchar();
     tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
-	
+
     return ch;
 }
 #endif
@@ -112,7 +112,7 @@ void TextBox::render() const {
 		if (text.size() > 2 * (w - 2)) // Check text bbox
 			rendered_text = rendered_text.substr(text.size() - 2 * w + 4);
 
-		EngineInstance::getInstance()->drawText(2 * (x + 1), y + h / 2, rendered_text, Color::Default, Color::Default);
+		EngineInstance::getInstance()->drawText(2 * (x + 1), y + h / 2, rendered_text, text_color, background_color);
 	}
 }
 

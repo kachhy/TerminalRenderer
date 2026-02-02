@@ -140,7 +140,7 @@ void uiTesting(EngineInstance* inst) {
 	// Button button1(15, 15, 20, 5, "Click to print", print_stuff, Color::Blue, Color::Blue, Color::White, Color::White);
 	// Button button2(15, 25, 20, 5, "Click to print other stuff", print_stuff2, Color::Blue, Color::Blue, Color::White, Color::White);
 	// Slider slider(40, 5, 20, 3, 1, 10, 5, 1, Color::White, Color::Black, Color::White, Color::Blue);
-	// CheckBox cb(40, 15, 3, "Testbox", Color::White, Color::Red, Color::Green, Color::White, false);
+	// CheckBox cb(40, 15, 3, "Testbox", Color::White, Color::Red, Color::Green, ForegroundColor::White, false);
 	// ScrollableCanvas canvas(40, 20, 8, 8, 30, 30, Color::White, Color::Blue);
 	// ui_inst->elements.emplace_back(&button);
 	// ui_inst->elements.emplace_back(&button1);
@@ -166,7 +166,7 @@ void uiTesting(EngineInstance* inst) {
 	// drawCircle(20, 20, 5, Color::Magenta, RenderRule::RENDER_DEFAULT, boundAddToQueue2);
 	
 	// 3
-	TextBox textbox(25, 1, 15, 5, Color::White, Color::Black, Color::Blue, Color::White);
+	TextBox textbox(25, 1, 15, 5, ForegroundColor::White, Color::Black, Color::Blue, Color::White);
 	ui_inst->elements.emplace_back(&textbox);
 	
 	while (1) {

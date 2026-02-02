@@ -40,6 +40,28 @@ enum class Color {
 	BrightWhite = 107
 };
 
+enum class ForegroundColor {
+    Default = 39,
+
+    Black = 30,
+    Red = 31,
+    Green = 32,
+    Yellow = 33,
+    Blue = 34,
+    Magenta = 35,
+    Cyan = 36,
+    White = 37,
+
+    BrightBlack = 90,  // Often used as "Gray"
+    BrightRed = 91,
+    BrightGreen = 92,
+    BrightYellow = 93,
+    BrightBlue = 94,
+    BrightMagenta = 95,
+    BrightCyan = 96,
+    BrightWhite = 97
+};
+
 enum class RenderRule {
 	RENDER_DEFAULT = 0,
 	RENDER_ALWAYS_ON_TOP,
@@ -65,13 +87,14 @@ struct std::hash<Coord> {
 struct Task {
 	std::string text;
 	size_t x, y;
-	Color color, foreground_color; // foreground_color is used for text only
+	Color color;
+	ForegroundColor foreground_color; // foreground_color is used for text only
 	RenderRule rule;
 
 	Task() = default;
 	Task(const Task& other) : text(other.text), x(other.x), y(other.y), color(other.color), foreground_color(other.foreground_color), rule(other.rule) { }
 	Task(const size_t x, const size_t y, const Color color, const RenderRule rule = RenderRule::RENDER_DEFAULT) : x(x), y(y), color(color), rule(rule) { }
-	Task(const size_t x, const size_t y, const Color color, const Color foreground_color, const std::string& text, const RenderRule rule = RenderRule::RENDER_DEFAULT) :
+	Task(const size_t x, const size_t y, const Color color, const ForegroundColor foreground_color, const std::string& text, const RenderRule rule = RenderRule::RENDER_DEFAULT) :
 		x(x), y(y), color(color), foreground_color(foreground_color), text(text), rule(rule) { }
 
 	Coord toCoord() const { return Coord(x, y); }
@@ -150,11 +173,12 @@ public:
 	void resetBackground() { backgroundTask.rule = RenderRule::RENDER_EMPTY; }
 
 	// Text
-	void drawText(const size_t x, const size_t y, const std::string& text, const Color foreground_color, const Color background_color = Color::Default);
+	void drawText(const size_t x, const size_t y, const std::string& text, const ForegroundColor foreground_color, const Color background_color = Color::Default);
 };
 
 void setCharAt(const Task& tile);
 
 inline std::ostream& operator<<(std::ostream& os, Color c) { return os << "\033[" << static_cast<int>(c) << "m"; }
+inline std::ostream& operator<<(std::ostream& os, ForegroundColor c) { return os << "\033[" << static_cast<int>(c) << "m"; }
 
 #endif // ENGINE_H
