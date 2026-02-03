@@ -30,7 +30,7 @@ enum class Color {
 	Cyan = 46,
 	White = 47,
 
-	BrightBlack = 100,
+	Gray = 100,
 	BrightRed = 101,
 	BrightGreen = 102,
 	BrightYellow = 103,
@@ -52,7 +52,7 @@ enum class ForegroundColor {
     Cyan = 36,
     White = 37,
 
-    BrightBlack = 90,  // Often used as "Gray"
+    Gray = 90,
     BrightRed = 91,
     BrightGreen = 92,
     BrightYellow = 93,
@@ -128,6 +128,13 @@ private:
 			for (size_t j = 0; j < term_width; ++j)
 				screen.emplace_back(j, i, Color::Default, RenderRule::RENDER_EMPTY);
 		}
+
+		buffer_size = 8 * term_width * term_height;
+		screen_buffer = new char[buffer_size];
+	}
+
+	~EngineInstance() {
+		delete [] screen_buffer;
 	}
 
 	// Singleton instance
@@ -139,6 +146,9 @@ private:
 
 	Task backgroundTask;
 	size_t term_width, term_height;
+
+	size_t buffer_size;
+	char* screen_buffer;
 public:
 	[[nodiscard]] static EngineInstance* getInstance() {
 		if (single == nullptr)

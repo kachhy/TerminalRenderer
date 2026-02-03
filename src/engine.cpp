@@ -8,6 +8,8 @@ void EngineInstance::addToQueue(const Task& task) { screen[task.x + task.y * ter
 void setCharAt(const Task& task) { std::cout << "\033[" << task.y << ";" << task.x * 2 << "H" << " \033[" << task.color << " \033[39"; }
 
 void EngineInstance::tick() {
+	// Set up the max buffer
+	std::cout.rdbuf()->pubsetbuf(screen_buffer, buffer_size);
 	std::stringstream ss;
 	ss << "\033[H"; // Reset
 	std::unordered_set<Coord> text_skip_indices;
