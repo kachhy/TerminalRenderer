@@ -12,6 +12,7 @@ public:
 	void setActive(const bool val) { is_active = val; }
 	
 	virtual void render() const = 0;
+	virtual bool alwaysRender() const { return false; }
 	
 	// Input functions
 	virtual void onSelect() { };
@@ -103,8 +104,17 @@ public:
 		}
 	}
 
+	void clear() {
+		screen.clear();
+		for (size_t i = 0; i < screen_h; ++i) {
+			for (size_t j = 0; j < screen_w; ++j)
+				screen.emplace_back(j, i, Color::Default, RenderRule::RENDER_EMPTY);
+		}
+	}
+
 	void addToQueue(const Task& task) { screen[task.x + task.y * screen_w] = task; }
 	void render() const override;
+	virtual bool alwaysRender() const override { return true; }
 
 	void onLeftArrow() override;
 	void onRightArrow() override;

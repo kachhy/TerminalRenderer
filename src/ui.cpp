@@ -9,6 +9,25 @@
 #include <unistd.h>
 #include <cstdio>
 
+int _kbhit() {
+    static const int STDIN = 0;
+    static bool initialized = false;
+
+    if (! initialized) {
+        // Use termios to turn off line buffering
+        termios term;
+        tcgetattr(STDIN, &term);
+        term.c_lflag &= ~ICANON;
+        tcsetattr(STDIN, TCSANOW, &term);
+        setbuf(stdin, NULL);
+        initialized = true;
+    }
+
+    int bytesWaiting;
+    ioctl(STDIN, FIONREAD, &bytesWaiting);
+    return bytesWaiting;
+}
+
 int _getch() {
     int ch;
     struct termios oldt, newt;
@@ -190,6 +209,9 @@ bool UIInstance::inputTick() {
 	if (!elements.size())
 		return false;
 
+	if (!_kbhit())
+		return false;
+
 	char c = _getch();
 
 	if (c == '\t') {
@@ -234,5 +256,11 @@ void UIInstance::UITick() {
 	if (inputTick()) {
 		for (auto element : elements)
 			element->render();
+	}
+	else {
+		for (auto element : elements) {
+			if (element->alwaysRender())
+				element->render();
+		}
 	}
 }
